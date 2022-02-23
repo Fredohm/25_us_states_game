@@ -19,14 +19,15 @@ screen.addshape(image)
 turtle.shape(image)
 
 
-correct_answers = 0
-game_is_on = True
-while game_is_on:
-    answer_state = screen.textinput(title=f"{correct_answers}/50 States Correct", prompt="What's another state's name?")
+guessed_sates = []
+
+while len(guessed_sates) < 50:
+    answer_state = screen.textinput(title=f"{len(guessed_sates)}/50 States Correct",
+                                    prompt="What's another state's name?").title()
     for state in df.state:
-        if state.lower() == answer_state.lower():
-            correct_answers += 1
-            state_row = df[df.state == state]
-            write_state(answer_state, int(state_row.x), int(state_row.y))
-            print(f"x: {state_row.x}, y: {state_row.y}")
+        if state == answer_state:
+            if state not in guessed_sates:
+                guessed_sates.append(state)
+                state_row = df[df.state == state]
+                write_state(state_row.state.item(), int(state_row.x), int(state_row.y))
 turtle.mainloop()
